@@ -1,0 +1,49 @@
+schema_version: 1
+calibration_verified: true
+candidate_only: false
+acceptance_scope: stationary_relocalization
+accepted_utc: '2026-09-07T00:00:00+00:00'
+notes: >-
+  Field acceptance baseline authorized by the operator for the real Bunker
+  stationary relocalization trial. It intentionally preserves the existing CAD
+  nominal base_link-to-MID360 geometry without changing any numeric transform.
+  Revalidate after any chassis, MID360 mount, or base_link mechanical change.
+
+base_link_z: 0.200000
+
+base_link_to_cad:
+  xyz: [0.247951164, 0.0, 0.623785841]
+  rpy: [0.0, 0.0, 0.0]
+  verified: true
+  source: field_acceptance_2026-09-07
+
+cad_to_lidar_mount:
+  xyz: [0.158123575840648, 0.0, 0.103682276997015]
+  rpy: [0.0, 0.226892802759063, 0.0]
+  verified: true
+  source: field_acceptance_2026-09-07
+
+lidar_mount_to_lidar:
+  xyz: [0.0, 0.0, 0.0]
+  rpy: [0.0, 0.0, 0.0]
+  verified: true
+  source: field_acceptance_2026-09-07
+
+# GNSS lever arm remains unknown and deliberately stays out of the TF tree.
+gnss:
+  enabled: false
+  cad_to_mount:
+    xyz: [0.0, 0.0, 0.0]
+    rpy: [0.0, 0.0, 0.0]
+    verified: false
+    source: unset
+  mount_to_apc:
+    xyz: [0.0, 0.0, 0.0]
+    rpy: [0.0, 0.0, 0.0]
+    verified: false
+    source: unset
+
+collision_proxy:
+  size: [1.023, 0.778, 0.400]
+  origin_xyz: [0.0, 0.0, 0.0]
+  origin_rpy: [0.0, 0.0, 0.0]

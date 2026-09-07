@@ -13,12 +13,31 @@ def _config():
     )
 
 
+def _field_acceptance_config():
+    return yaml.safe_load(
+        (_root() / "config" / "field_acceptance.yaml").read_text(encoding="utf-8")
+    )
+
+
 def test_initial_candidate_is_not_marked_verified():
     cfg = _config()
     assert cfg["calibration_verified"] is False
     assert cfg["candidate_only"] is True
     assert cfg["base_link_to_cad"]["verified"] is False
     assert cfg["lidar_mount_to_lidar"]["verified"] is False
+
+
+def test_field_acceptance_is_explicit_and_preserves_the_accepted_geometry():
+    cfg = _field_acceptance_config()
+    initial = _config()
+    assert cfg["calibration_verified"] is True
+    assert cfg["candidate_only"] is False
+    assert cfg["acceptance_scope"] == "stationary_relocalization"
+    assert cfg["base_link_to_cad"]["verified"] is True
+    assert cfg["cad_to_lidar_mount"]["verified"] is True
+    assert cfg["lidar_mount_to_lidar"]["verified"] is True
+    assert cfg["base_link_to_cad"]["xyz"] == initial["base_link_to_cad"]["xyz"]
+    assert cfg["cad_to_lidar_mount"]["rpy"] == initial["cad_to_lidar_mount"]["rpy"]
 
 
 def test_solidworks_lidar_nominal_is_preserved():

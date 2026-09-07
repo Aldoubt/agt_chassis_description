@@ -12,7 +12,7 @@ def generate_launch_description():
     package_share = FindPackageShare("tracked_chassis_description")
     model = PathJoinSubstitution([package_share, "urdf", "tracked_chassis.urdf.xacro"])
     default_calibration = PathJoinSubstitution(
-        [package_share, "config", "cad_alignment.initial_guess.yaml"]
+        [package_share, "config", "field_acceptance.yaml"]
     )
 
     calibration_file = LaunchConfiguration("calibration_file")
