@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AGT Robot Profile V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "robot_id", "description", "base", "frames", "sensors", "capabilities", "geometry", "motion", "terrain"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "robot_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+    "description": {
+      "type": "object", "required": ["xacro", "calibration"],
+      "properties": {"xacro": {"type": "string"}, "calibration": {"type": "string"}}
+    },
+    "base": {
+      "type": "object", "required": ["type", "driver"],
+      "properties": {"type": {"type": "string"}, "driver": {"type": "string"}}
+    },
+    "frames": {
+      "type": "object", "required": ["base", "footprint", "lidar", "imu"],
+      "properties": {
+        "base": {"type": "string"}, "footprint": {"type": "string"},
+        "lidar": {"type": "string"}, "imu": {"type": "string"}
+      }
+    },
+    "sensors": {
+      "type": "object", "required": ["lidar", "imu", "gnss", "camera_gimbal"],
+      "properties": {
+        "lidar": {"$ref": "#/$defs/sensor"}, "imu": {"$ref": "#/$defs/sensor"},
+        "gnss": {"$ref": "#/$defs/sensor"}, "camera_gimbal": {"$ref": "#/$defs/sensor"}
+      }
+    },
+    "capabilities": {
+      "type": "object", "required": ["navigation", "acquire_view", "perception", "manipulation"],
+      "properties": {
+        "navigation": {"type": "boolean"}, "acquire_view": {"type": "boolean"},
+        "perception": {"type": "boolean"}, "manipulation": {"type": "boolean"}
+      }
+    },
+    "geometry": {
+      "type": "object", "required": ["width", "length", "footprint", "safety_margin", "source"],
+      "properties": {
+        "width": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "length": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "footprint": {"type": "array", "minItems": 3, "items": {"type": "array", "prefixItems": [{"type": "number"}, {"type": "number"}], "minItems": 2, "maxItems": 2}},
+        "safety_margin": {"type": ["number", "null"], "minimum": 0},
+        "source": {"type": "string"}
+      }
+    },
+    "motion": {
+      "type": "object", "required": ["max_linear_velocity", "max_angular_velocity", "source"],
+      "properties": {
+        "max_linear_velocity": {"type": ["number", "null"], "minimum": 0},
+        "max_angular_velocity": {"type": ["number", "null"], "minimum": 0},
+        "source": {"type": "string"}
+      }
+    },
+    "terrain": {
+      "type": "object", "required": ["max_slope_deg", "max_step_height_m", "roughness_limit", "source"],
+      "properties": {
+        "max_slope_deg": {"type": ["number", "null"], "minimum": 0},
+        "max_step_height_m": {"type": ["number", "null"], "minimum": 0},
+        "roughness_limit": {"type": ["number", "null"], "minimum": 0},
+        "source": {"type": "string"}
+      }
+    }
+  },
+  "$defs": {
+    "sensor": {
+      "type": "object", "required": ["enabled", "source"],
+      "properties": {
+        "enabled": {"type": "boolean"}, "topic": {"type": ["string", "null"]},
+        "source": {"type": "string"}
+      }
+    }
+  }
+}

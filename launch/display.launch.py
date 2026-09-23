@@ -9,8 +9,10 @@ from launch.substitutions import PathJoinSubstitution
 
 
 def generate_launch_description():
-    package_share = FindPackageShare("tracked_chassis_description")
-    model = PathJoinSubstitution([package_share, "urdf", "tracked_chassis.urdf.xacro"])
+    package_share = FindPackageShare("agt_robot_description")
+    robot = LaunchConfiguration("robot")
+    model = PathJoinSubstitution([
+        package_share, "urdf", "robots", robot, "robot.urdf.xacro"])
     default_calibration = PathJoinSubstitution(
         [package_share, "config", "field_acceptance.yaml"]
     )
@@ -27,6 +29,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        DeclareLaunchArgument("robot", default_value="bunker_v1", choices=["bunker_v1"]),
         DeclareLaunchArgument(
             "calibration_file",
             default_value=default_calibration,

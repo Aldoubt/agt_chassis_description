@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot name="tracked_chassis" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="calibration_file" default="$(find agt_robot_description)/config/field_acceptance.yaml"/>
+  <xacro:property name="calib" value="${xacro.load_yaml('$(arg calibration_file)')}"/>
+  <xacro:property name="base_link_z" value="${calib['base_link_z']}"/>
+  <xacro:property name="base_to_cad" value="${calib['base_link_to_cad']}"/>
+  <xacro:property name="cad_to_lidar" value="${calib['cad_to_lidar_mount']}"/>
+  <xacro:property name="lidar_correction" value="${calib['lidar_mount_to_lidar']}"/>
+  <xacro:property name="collision" value="${calib['collision_proxy']}"/>
+  <xacro:property name="gnss" value="${calib['gnss']}"/>
+
+  <xacro:include filename="$(find agt_robot_description)/urdf/common/materials.xacro"/>
+  <xacro:include filename="$(find agt_robot_description)/urdf/common/frames.xacro"/>
+  <xacro:include filename="$(find agt_robot_description)/urdf/robots/bunker_v1/chassis.xacro"/>
+  <xacro:include filename="$(find agt_robot_description)/urdf/robots/bunker_v1/sensors.xacro"/>
+
+  <xacro:agt_materials/>
+  <xacro:agt_base_frames/>
+  <xacro:agt_bunker_chassis/>
+  <xacro:agt_bunker_sensors/>
+</robot>

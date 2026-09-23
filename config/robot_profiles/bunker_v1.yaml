@@ -1,0 +1,39 @@
+schema_version: 1
+robot_id: bunker_v1
+description:
+  xacro: urdf/robots/bunker_v1/robot.urdf.xacro
+  calibration: config/field_acceptance.yaml
+base:
+  type: tracked
+  driver: bunker_base
+frames:
+  base: base_link
+  footprint: base_footprint
+  lidar: lidar_link
+  imu: imu_link
+sensors:
+  lidar: {enabled: true, topic: /livox/lidar, source: config/field_acceptance.yaml}
+  imu: {enabled: true, topic: /livox/imu, source: config/field_acceptance.yaml}
+  gnss: {enabled: false, topic: null, source: config/field_acceptance.yaml}
+  camera_gimbal: {enabled: true, source: agt_system_bringup/launch/hardware.launch.py}
+capabilities:
+  navigation: true
+  acquire_view: true
+  perception: true
+  manipulation: false
+geometry:
+  width: null
+  length: null
+  footprint: [[0.52, 0.40], [0.52, -0.40], [-0.52, -0.40], [-0.52, 0.40]]
+  safety_margin: 0.03
+  source: agt_navigation_v3/config/robot.yaml
+  physical_dimensions_source: TODO_field_measurement
+motion:
+  max_linear_velocity: 0.55
+  max_angular_velocity: 0.65
+  source: agt_navigation_v3/config/safety.yaml
+terrain:
+  max_slope_deg: null
+  max_step_height_m: null
+  roughness_limit: null
+  source: TODO_field_acceptance

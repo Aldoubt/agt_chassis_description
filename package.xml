@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>tracked_chassis_description</name>
+  <name>agt_robot_description</name>
   <version>0.2.0</version>
   <description>ROS 2 description wrapper for the tracked chassis SolidWorks CAD export.</description>
   <maintainer email="maintainer@example.com">maintainer</maintainer>
@@ -12,9 +12,11 @@
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>rviz2</exec_depend>
+  <exec_depend>python3-jsonschema</exec_depend>
 
   <test_depend>ament_cmake_pytest</test_depend>
   <test_depend>python3-yaml</test_depend>
+  <test_depend>python3-jsonschema</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="agt_bunker_chassis">
+    <link name="chassis_cad_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://agt_robot_description/meshes/bunker_v1/chassis_cad.stl"/></geometry>
+        <material name="cad_gray"/>
+      </visual>
+    </link>
+    <joint name="base_link_to_chassis_cad_link" type="fixed">
+      <parent link="base_link"/><child link="chassis_cad_link"/>
+      <origin xyz="${' '.join(str(v) for v in base_to_cad['xyz'])}"
+              rpy="${' '.join(str(v) for v in base_to_cad['rpy'])}"/>
+    </joint>
+  </xacro:macro>
+</robot>

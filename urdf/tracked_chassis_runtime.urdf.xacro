@@ -2,7 +2,7 @@
 <robot name="tracked_chassis" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:arg
     name="calibration_file"
-    default="$(find tracked_chassis_description)/config/field_acceptance.yaml"/>
+    default="$(find agt_robot_description)/config/field_acceptance.yaml"/>
 
   <xacro:property name="calibration_file_path" value="$(arg calibration_file)"/>
   <xacro:property name="calib" value="${xacro.load_yaml(calibration_file_path)}"/>

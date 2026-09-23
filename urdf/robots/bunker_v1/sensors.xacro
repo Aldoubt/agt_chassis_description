@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="agt_bunker_sensors">
+    <link name="lidar_mount_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry><mesh filename="package://agt_robot_description/meshes/bunker_v1/mid360_cad.stl"/></geometry>
+        <material name="sensor_dark"/>
+      </visual>
+    </link>
+    <joint name="chassis_cad_to_lidar_mount" type="fixed">
+      <parent link="chassis_cad_link"/><child link="lidar_mount_link"/>
+      <origin xyz="${' '.join(str(v) for v in cad_to_lidar['xyz'])}"
+              rpy="${' '.join(str(v) for v in cad_to_lidar['rpy'])}"/>
+    </joint>
+    <link name="lidar_link"/>
+    <joint name="lidar_mount_to_lidar_link" type="fixed">
+      <parent link="lidar_mount_link"/><child link="lidar_link"/>
+      <origin xyz="${' '.join(str(v) for v in lidar_correction['xyz'])}"
+              rpy="${' '.join(str(v) for v in lidar_correction['rpy'])}"/>
+    </joint>
+    <link name="livox_frame"/>
+    <joint name="lidar_link_to_livox_frame" type="fixed">
+      <parent link="lidar_link"/><child link="livox_frame"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    <link name="imu_link"/>
+    <joint name="lidar_link_to_imu_link" type="fixed">
+      <parent link="lidar_link"/><child link="imu_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    <xacro:if value="${gnss['enabled']}">
+      <link name="gnss_mount_link"/>
+      <joint name="chassis_cad_to_gnss_mount" type="fixed">
+        <parent link="chassis_cad_link"/><child link="gnss_mount_link"/>
+        <origin xyz="${' '.join(str(v) for v in gnss['cad_to_mount']['xyz'])}"
+                rpy="${' '.join(str(v) for v in gnss['cad_to_mount']['rpy'])}"/>
+      </joint>
+      <link name="gnss_link"/>
+      <joint name="gnss_mount_to_gnss_link" type="fixed">
+        <parent link="gnss_mount_link"/><child link="gnss_link"/>
+        <origin xyz="${' '.join(str(v) for v in gnss['mount_to_apc']['xyz'])}"
+                rpy="${' '.join(str(v) for v in gnss['mount_to_apc']['rpy'])}"/>
+      </joint>
+    </xacro:if>
+  </xacro:macro>
+</robot>
