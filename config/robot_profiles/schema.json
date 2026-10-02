@@ -12,8 +12,47 @@
       "properties": {"xacro": {"type": "string"}, "calibration": {"type": "string"}}
     },
     "base": {
-      "type": "object", "required": ["type", "driver"],
-      "properties": {"type": {"type": "string"}, "driver": {"type": "string"}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type", "driver", "kinematics", "command_interface", "odom_source",
+        "publish_odom_tf", "control_rate_hz", "rotate_in_place"
+      ],
+      "properties": {
+        "type": {"type": "string", "minLength": 1},
+        "driver": {"type": "string", "minLength": 1},
+        "kinematics": {"enum": ["skid_steer", "differential", "ackermann"]},
+        "command_interface": {"type": "string", "minLength": 1},
+        "odom_source": {"type": "string", "pattern": "^/[^ ]+$"},
+        "publish_odom_tf": {"const": false},
+        "control_rate_hz": {"type": "integer", "exclusiveMinimum": 0},
+        "rotate_in_place": {"type": "boolean"},
+        "ackermann": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "wheelbase_m", "steering_angle_min_rad", "steering_angle_max_rad",
+            "max_steering_rate_radps", "minimum_turning_radius_m"
+          ],
+          "properties": {
+            "wheelbase_m": {"type": "number", "exclusiveMinimum": 0},
+            "steering_angle_min_rad": {"type": "number", "exclusiveMaximum": 0},
+            "steering_angle_max_rad": {"type": "number", "exclusiveMinimum": 0},
+            "max_steering_rate_radps": {"type": "number", "exclusiveMinimum": 0},
+            "minimum_turning_radius_m": {"type": "number", "exclusiveMinimum": 0}
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kinematics": {"const": "ackermann"}}, "required": ["kinematics"]},
+          "then": {"required": ["ackermann"], "properties": {"rotate_in_place": {"const": false}}}
+        },
+        {
+          "if": {"properties": {"kinematics": {"enum": ["skid_steer", "differential"]}}, "required": ["kinematics"]},
+          "then": {"not": {"required": ["ackermann"]}}
+        }
+      ]
     },
     "frames": {
       "type": "object", "required": ["base", "footprint", "lidar", "imu"],
@@ -72,5 +111,30 @@
         "source": {"type": "string"}
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"base": {"properties": {"kinematics": {"const": "ackermann"}}, "required": ["kinematics"]}},
+        "required": ["base"]
+      },
+      "then": {
+        "properties": {
+          "geometry": {
+            "properties": {
+              "width": {"type": "number", "exclusiveMinimum": 0},
+              "length": {"type": "number", "exclusiveMinimum": 0},
+              "safety_margin": {"type": "number", "minimum": 0}
+            }
+          },
+          "motion": {
+            "properties": {
+              "max_linear_velocity": {"type": "number", "exclusiveMinimum": 0},
+              "max_angular_velocity": {"type": "number", "exclusiveMinimum": 0}
+            }
+          }
+        }
+      }
+    }
+  ]
 }

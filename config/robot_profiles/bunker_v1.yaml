@@ -6,6 +6,16 @@ description:
 base:
   type: tracked
   driver: bunker_base
+  # The tracked chassis contract exposed to navigation is planar Twist.
+  kinematics: skid_steer
+  command_interface: twist
+  # Bunker wheel odometry is diagnostic; the selected LIO adapter owns odom TF.
+  odom_source: /wheel/odom
+  publish_odom_tf: false
+  # bunker_base_ros.cpp runs its chassis state loop at 50 Hz.
+  control_rate_hz: 50
+  # Preserve the current Nav2 Spin behavior and rotate-to-heading setting.
+  rotate_in_place: true
 frames:
   base: base_link
   footprint: base_footprint
