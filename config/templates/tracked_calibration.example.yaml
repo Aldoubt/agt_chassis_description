@@ -1,0 +1,16 @@
+# Template only. No live profile points to this file. Measure the selected vehicle.
+schema_version: 1
+robot_id: null
+calibration_verified: false
+verified_by: null
+base_link_z: null
+collision_proxy:
+  size: [null, null, null]
+  origin_xyz: [null, null, null]
+  origin_rpy: [null, null, null]
+base_link_to_lidar:
+  xyz: [null, null, null]
+  rpy: [null, null, null]
+lidar_to_imu:
+  xyz: [null, null, null]
+  rpy: [null, null, null]

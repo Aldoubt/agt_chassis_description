@@ -1,0 +1,38 @@
+# Fill for exactly one measured YHS/custom chassis, then register under robot_profiles.
+# This template is deliberately not a loadable live Robot Profile.
+schema_version: 1
+robot_id: null
+description:
+  xacro: urdf/robots/generic_tracked/robot.urdf.xacro
+  calibration: null
+base:
+  type: tracked
+  driver: null
+  kinematics: skid_steer
+  command_interface: twist
+  odom_source: null
+  publish_odom_tf: false
+  control_rate_hz: 50
+  rotate_in_place: true
+frames: {base: base_link, footprint: base_footprint, lidar: lidar_link, imu: imu_link}
+sensors:
+  lidar: {enabled: true, topic: /livox/lidar, source: null}
+  imu: {enabled: true, topic: /livox/imu, source: null}
+  gnss: {enabled: false, topic: null, source: null}
+  camera_gimbal: {enabled: false, source: null}
+capabilities: {navigation: true, acquire_view: false, perception: true, manipulation: false}
+geometry:
+  width: null
+  length: null
+  footprint: []
+  safety_margin: null
+  source: null
+motion:
+  max_linear_velocity: null
+  max_angular_velocity: null
+  source: null
+terrain:
+  max_slope_deg: null
+  max_step_height_m: null
+  roughness_limit: null
+  source: null

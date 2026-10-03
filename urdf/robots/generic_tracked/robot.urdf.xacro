@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot name="generic_tracked" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="calibration_file" default=""/>
+  <xacro:property name="calib" value="${xacro.load_yaml('$(arg calibration_file)')}"/>
+  <link name="base_footprint"/>
+  <link name="base_link">
+    <visual><origin xyz="${' '.join(str(v) for v in calib['collision_proxy']['origin_xyz'])}" rpy="${' '.join(str(v) for v in calib['collision_proxy']['origin_rpy'])}"/><geometry><box size="${' '.join(str(v) for v in calib['collision_proxy']['size'])}"/></geometry></visual>
+    <collision><origin xyz="${' '.join(str(v) for v in calib['collision_proxy']['origin_xyz'])}" rpy="${' '.join(str(v) for v in calib['collision_proxy']['origin_rpy'])}"/><geometry><box size="${' '.join(str(v) for v in calib['collision_proxy']['size'])}"/></geometry></collision>
+  </link>
+  <joint name="base_footprint_to_base_link" type="fixed"><parent link="base_footprint"/><child link="base_link"/><origin xyz="0 0 ${calib['base_link_z']}"/></joint>
+  <xacro:macro name="fixed_sensor" params="name parent transform">
+    <link name="${name}"/>
+    <joint name="${parent}_to_${name}" type="fixed"><parent link="${parent}"/><child link="${name}"/><origin xyz="${' '.join(str(v) for v in transform['xyz'])}" rpy="${' '.join(str(v) for v in transform['rpy'])}"/></joint>
+  </xacro:macro>
+  <xacro:fixed_sensor name="lidar_link" parent="base_link" transform="${calib['base_link_to_lidar']}"/>
+  <!-- Livox's source header names the same physical LiDAR origin. -->
+  <link name="livox_frame"/>
+  <joint name="lidar_link_to_livox_frame" type="fixed"><parent link="lidar_link"/><child link="livox_frame"/><origin xyz="0 0 0" rpy="0 0 0"/></joint>
+  <xacro:fixed_sensor name="imu_link" parent="lidar_link" transform="${calib['lidar_to_imu']}"/>
+</robot>
